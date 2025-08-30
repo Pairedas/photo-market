@@ -1,0 +1,20 @@
+<h2>Contact</h2>
+
+<section class="section">
+  <form class="form" method="post" action="/contact" style="display:grid;gap:12px;max-width:600px">
+    <!-- Honeypot anti-spam (champ caché, doit rester vide) -->
+    <input type="text" name="company" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+
+    <div>
+      <label for="email">Votre email</label>
+      <input id="email" type="email" name="email" required style="width:100%">
+    </div>
+
+    <div>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required style="width:100%"></textarea>
+    </div>
+
+    <button class="btn" type="submit">Envoyer</button>
+  </form>
+</section>

@@ -1,0 +1,14 @@
+<section class="section reveal" style="margin-top:20px">
+    <div style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px;text-align:center">
+      <h1 style="margin:0 0 8px">Merci 🙌</h1>
+      <p class="muted" style="margin:0 0 12px">Référence de votre commande :</p>
+      <p style="font-size:20px;font-weight:800;margin:0 0 16px"><%= orderRef %></p>
+      <p class="muted" style="margin:0 0 16px">
+        Nous vérifions votre paiement. Vous recevrez un email avec un lien de téléchargement sécurisé.
+      </p>
+      <% if (typeof contact !== 'undefined' && contact) { %>
+        <p class="muted" style="margin:0 0 16px">Besoin d’aide ? <%= contact %></p>
+      <% } %>
+      <a class="btn" href="/">Retour à l’accueil</a>
+    </div>
+  </section>

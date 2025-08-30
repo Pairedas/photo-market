@@ -1,0 +1,31 @@
+<a class="btn outline" href="/">← Retour à l’accueil</a>
+
+<section class="section reveal" style="margin-top:20px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start">
+    
+    <!-- Image produit -->
+    <div style="border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)">
+      <img src="<%= photo.preview_path %>" alt="<%= photo.title %>" style="width:100%;display:block">
+    </div>
+    
+    <!-- Infos produit -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <h1 style="margin:0;font-size:32px"><%= photo.title %></h1>
+      
+      <% if (photo.categories && photo.categories.length) { %>
+        <div class="chips">
+          <% photo.categories.forEach(cat => { %>
+            <span class="chip"><%= cat %></span>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <div class="price" style="font-size:24px"><%= photo.price %> <%= photo.currency || currency %></div>
+      
+      <p style="color:var(--muted)">Ajoutez cette photo à votre collection. Après validation de votre paiement, vous recevrez un lien de téléchargement sécurisé par email.</p>
+      
+      <a class="btn" style="align-self:flex-start" href="/checkout/<%= photo.slug %>">Acheter</a>
+    </div>
+
+  </div>
+</section>

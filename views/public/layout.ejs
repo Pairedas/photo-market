@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title ? title + ' – ' + siteName : siteName %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">📸 <%= siteName %></a>
+      <nav class="nav">
+        <a href="/catalogue">Catalogue</a>
+        <a href="/about">À propos</a>
+        <a href="/faq">FAQ</a>
+        <a class="btn outline" href="/contact">Contact</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <%- body %>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© <%= new Date().getFullYear() %> <%= siteName %></div>
+  </footer>
+
+  <script>
+    // Menu mobile minimal
+    const btn = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    if (btn && nav) btn.addEventListener('click', ()=> nav.classList.toggle('open'));
+    // Apparition au scroll
+    const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.1});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>

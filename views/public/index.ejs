@@ -1,0 +1,57 @@
+<!-- HERO -->
+<section class="hero reveal">
+  <div>
+    <h1>Des visuels pro pour booster vos ventes</h1>
+    <p>Ajoutez à votre catalogue des photos prêtes à l’emploi. Paiement Mobile Money, validation rapide, lien sécurisé à usage limité.</p>
+    <div class="cta">
+      <a class="btn" href="/catalogue">Voir le catalogue</a>
+      <a class="btn outline" href="/contact">Nous contacter</a>
+      <a class="btn ghost" href="/faq">FAQ</a>
+    </div>
+  </div>
+  <div class="media">
+    <!-- Utilise une image de ton choix (par ex. l’image maquette) -->
+    <img src="/img/hero-placeholder.jpg" alt="Hero">
+  </div>
+</section>
+
+<!-- BANDEAU CONFIANCE -->
+<section class="trust reveal">
+  <div class="item">🔒 <div><b>Téléchargement sécurisé</b><small class="muted">Lien à usage limité</small></div></div>
+  <div class="item">⚡ <div><b>Validation rapide</b><small class="muted">Sous 24h</small></div></div>
+  <div class="item">📱 <div><b>Mobile Money</b><small class="muted">Orange • Moov</small></div></div>
+  <div class="item">💬 <div><b>Support</b><small class="muted">Réponse en 24h</small></div></div>
+</section>
+
+<!-- PRODUITS -->
+<section class="section reveal">
+  <div class="bar">
+    <h2 style="margin:0">Nouveautés</h2>
+    <a class="btn outline" href="/catalogue">Tout voir</a>
+  </div>
+  <div class="grid">
+    <% (latest || photos || []).forEach(p => { %>
+      <article class="card">
+        <a href="/photo/<%= p.slug %>">
+          <img class="img" src="<%= p.preview_path %>" alt="<%= p.title %>">
+        </a>
+        <div class="body">
+          <a class="title" href="/photo/<%= p.slug %>"><%= p.title %></a>
+          <div class="price"><%= p.price %> <%= p.currency || currency %></div>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<!-- CATÉGORIES -->
+<% if ((categories||[]).length) { %>
+<section class="section reveal">
+  <div class="bar"><h2 style="margin:0">Catégories</h2></div>
+  <div class="chips">
+    <% categories.forEach(cat => { %>
+      <a class="chip" href="/catalogue?cat=<%= encodeURIComponent(cat) %>"><%= cat %></a>
+    <% }) %>
+  </div>
+</section>
+<% } %>

@@ -1,0 +1,89 @@
+<a class="btn outline" href="/photo/<%= photo.slug %>">← Retour</a>
+
+<section class="section reveal" style="margin-top:20px">
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start">
+    <!-- Récap produit -->
+    <aside style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden">
+      <img src="<%= photo.preview_path %>" alt="<%= photo.title %>" style="width:100%;display:block;aspect-ratio:1/1;object-fit:cover">
+      <div style="padding:14px">
+        <h2 style="margin:0 0 6px"><%= photo.title %></h2>
+        <div class="price" style="font-size:20px;font-weight:800"><%= photo.price %> <%= photo.currency || currency %></div>
+        <% if (photo.categories && photo.categories.length) { %>
+          <div class="chips" style="margin-top:8px">
+            <% photo.categories.forEach(cat => { %>
+              <span class="chip"><%= cat %></span>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </aside>
+
+    <!-- Formulaire de paiement -->
+    <div>
+      <!-- Instructions paiement -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:16px">
+        <h3 style="margin:0 0 8px">Paiement Mobile Money</h3>
+        <p class="muted" style="margin:0 0 6px">
+          Montant : <strong><%= photo.price %> <%= photo.currency || currency %></strong>
+        </p>
+        <p class="muted" style="margin:0 0 6px">
+          Numéro du bénéficiaire : <strong><%= momoNumber %></strong> — Nom : <strong><%= momoName %></strong>
+        </p>
+        <p class="muted" style="margin:0">
+          <em>Important :</em> utilisez la référence <strong><%= orderRef %></strong> lors du paiement.  
+          Délai de soumission de la preuve : <strong><%= paymentDelayHours %>h</strong>.
+        </p>
+      </div>
+
+      <form method="post" enctype="multipart/form-data"
+            style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;display:grid;gap:12px">
+        <input type="hidden" name="order_ref" value="<%= orderRef %>"/>
+
+        <div>
+          <label for="buyer_email" style="display:block;margin-bottom:6px;font-weight:700">E-mail *</label>
+          <input id="buyer_email" name="buyer_email" type="email" required
+                 placeholder="vous@mail.com"
+                 style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+        </div>
+
+        <div>
+          <label for="buyer_name" style="display:block;margin-bottom:6px;font-weight:700">Nom (optionnel)</label>
+          <input id="buyer_name" name="buyer_name" type="text" placeholder="Votre nom"
+                 style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+        </div>
+
+        <div>
+          <label for="payment_method" style="display:block;margin-bottom:6px;font-weight:700">Méthode</label>
+          <select id="payment_method" name="payment_method"
+                  style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+            <option value="mobile_money">Mobile Money</option>
+            <option value="virement">Virement bancaire</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="payment_reference_client" style="display:block;margin-bottom:6px;font-weight:700">
+            Référence de paiement (re-saisir <%= orderRef %>) *
+          </label>
+          <input id="payment_reference_client" name="payment_reference_client" type="text" required
+                 placeholder="<%= orderRef %>"
+                 style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+        </div>
+
+        <div>
+          <label for="proof_file" style="display:block;margin-bottom:6px;font-weight:700">Preuve de paiement (image/PDF, 5 Mo) *</label>
+          <input id="proof_file" name="proof_file" type="file" accept="image/*,application/pdf" required>
+        </div>
+
+        <label style="display:flex;gap:8px;align-items:center">
+          <input type="checkbox" name="accept_cgv" required> J’accepte les CGV.
+        </label>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="submit">Envoyer ma preuve</button>
+          <a class="btn outline" href="/catalogue">Continuer à parcourir</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

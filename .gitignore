@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log*
+pnpm-lock.yaml
+yarn.lock
+
+# Build/coverage
+dist/
+build/
+coverage/
+
+# Données locales de l’app
+data/
+storage/
+*.sqlite
+
+# Fichiers d’environnement
+.env
+.env.local
+
+# OS & éditeurs
+.DS_Store
+.vscode/

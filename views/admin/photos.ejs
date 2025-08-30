@@ -1,0 +1,30 @@
+<section class="section">
+  <div class="bar" style="gap:8px">
+    <h2 style="margin:0">Photos</h2>
+    <a class="btn" href="<%= (adminBase||'/backoffice') %>/photos/new">Ajouter</a>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Aperçu</th><th>Titre</th><th>Slug</th><th>Prix</th><th>Statut</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% photos.forEach(p => { %>
+        <tr>
+          <td><img src="<%= p.preview_path %>" alt="" style="width:90px;height:70px;object-fit:cover;border-radius:10px"></td>
+          <td><%= p.title %></td>
+          <td><code><%= p.slug %></code></td>
+          <td><strong><%= p.price %> <%= p.currency || currency %></strong></td>
+          <td><span class="badge"><%= p.status %></span></td>
+          <td style="display:flex;gap:6px">
+            <form method="post" action="<%= (adminBase||'/backoffice') %>/photos/<%= p.id %>/toggle"><button class="btn outline" type="submit">Toggle</button></form>
+            <a class="btn outline" href="<%= (adminBase||'/backoffice') %>/photos/<%= p.id %>/edit">Éditer</a>
+            <form method="post" action="<%= (adminBase||'/backoffice') %>/photos/<%= p.id %>/delete" onsubmit="return confirm('Supprimer ?')"><button class="btn outline" type="submit">Supprimer</button></form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>

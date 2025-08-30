@@ -1,0 +1,52 @@
+<section class="section">
+  <h2 style="margin:0 0 8px">Commandes</h2>
+
+  <!-- KPI rapides -->
+  <div class="kpis">
+    <div class="card">
+      <div class="muted">Total</div>
+      <div style="font-size:20px;font-weight:800"><%= orders.length %></div>
+    </div>
+    <div class="card">
+      <div class="muted">En révision</div>
+      <div style="font-size:20px;font-weight:800"><%= orders.filter(o=>o.status==='UNDER_REVIEW').length %></div>
+    </div>
+    <div class="card">
+      <div class="muted">Payées</div>
+      <div style="font-size:20px;font-weight:800"><%= orders.filter(o=>o.status==='PAID').length %></div>
+    </div>
+    <div class="card">
+      <div class="muted">Livrées</div>
+      <div style="font-size:20px;font-weight:800"><%= orders.filter(o=>o.status==='FULFILLED').length %></div>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Réf</th>
+        <th>Photo</th>
+        <th>Client</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(o=>{ const p = photos.find(x=>x.id===o.photo_id); %>
+        <tr>
+          <td><code><%= o.order_ref %></code></td>
+          <td><%= p ? p.title : o.photo_id %></td>
+          <td><%= o.buyer_email %></td>
+          <td><strong><%= o.amount %> <%= o.currency %></strong></td>
+          <td><span class="badge"><%= o.status %></span></td>
+          <td><%= new Date(o.created_at).toLocaleString('fr-FR') %></td>
+          <td>
+            <a class="btn outline" href="<%= (adminBase||'/backoffice') %>/orders/<%= o.id %>">Voir</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>

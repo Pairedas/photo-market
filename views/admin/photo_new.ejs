@@ -1,0 +1,34 @@
+<a class="btn outline" href="<%= (adminBase||'/backoffice') %>/photos">← Retour</a>
+<h2 style="margin:12px 0 8px">Ajouter une photo</h2>
+
+<form class="form" method="post" action="<%= (adminBase||'/backoffice') %>/photos" enctype="multipart/form-data"
+      style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;display:grid;gap:12px;max-width:740px">
+  <label>Titre
+    <input type="text" name="title" required placeholder="Titre de la photo" style="width:100%">
+  </label>
+
+  <label>Prix
+    <input type="number" min="0" step="1" name="price" required placeholder="2000" style="width:100%">
+  </label>
+
+  <label>Catégories (séparées par des virgules)
+    <input type="text" name="categories" placeholder="Paysage,Sport" style="width:100%">
+  </label>
+
+  <label>Preview (publique)
+    <input type="file" name="preview_file" accept="image/*" required>
+  </label>
+
+  <label>Original (privé)
+    <input type="file" name="original_file" accept="image/*" required>
+  </label>
+
+  <label>Status
+    <select name="status">
+      <option value="published" selected>published</option>
+      <option value="draft">draft</option>
+    </select>
+  </label>
+
+  <button class="btn" type="submit">Enregistrer</button>
+</form>

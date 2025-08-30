@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc><%= (process.env.BASE_URL || 'http://127.0.0.1:' + (process.env.PORT || 3000)) %>/</loc></url>
+  <url><loc><%= (process.env.BASE_URL || 'http://127.0.0.1:' + (process.env.PORT || 3000)) %>/catalogue</loc></url>
+  <% (photos||[]).forEach(p => { %>
+    <url><loc><%= (process.env.BASE_URL || 'http://127.0.0.1:' + (process.env.PORT || 3000)) %>/photo/<%= p.slug %></loc></url>
+  <% }) %>
+</urlset>

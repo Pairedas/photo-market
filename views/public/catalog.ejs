@@ -1,0 +1,117 @@
+<h1 style="margin:18px 0">Catalogue</h1>
+
+<!-- Barre d’outils -->
+<section class="section" style="margin-top:0">
+  <div class="bar" style="gap:12px; flex-wrap:wrap">
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+      <input id="q" type="search" placeholder="Rechercher (titre, mots-clés)…"
+             style="padding:10px 12px;border:1px solid var(--line);border-radius:12px;min-width:260px">
+      <select id="sort" style="padding:10px 12px;border:1px solid var(--line);border-radius:12px">
+        <option value="recent">Trier : Plus récents</option>
+        <option value="price_asc">Prix croissant</option>
+        <option value="price_desc">Prix décroissant</option>
+        <option value="title_asc">Titre A→Z</option>
+        <option value="title_desc">Titre Z→A</option>
+      </select>
+    </div>
+  </div>
+
+  <% if ((categories||[]).length) { %>
+  <div id="chips" class="chips" style="margin-top:8px">
+    <button class="chip" data-cat="__all">Toutes</button>
+    <% categories.forEach(cat => { %>
+      <button class="chip" data-cat="<%= cat %>"><%= cat %></button>
+    <% }) %>
+  </div>
+  <% } %>
+</section>
+
+<!-- Grille -->
+<section class="section">
+  <div id="grid" class="grid">
+    <% (photos || []).forEach(p => {
+         const cats = (p.categories || []).join(',').toLowerCase();
+         const txt  = `${p.title||''} ${(p.keywords||[]).join(' ')}`.toLowerCase();
+    %>
+      <article class="card"
+               data-cats="<%= cats %>"
+               data-text="<%= txt %>"
+               data-title="<%= (p.title||'').toLowerCase() %>"
+               data-price="<%= Number(p.price||0) %>"
+               data-created="<%= p.created_at || p.updated_at || p.id || '' %>">
+        <a href="/photo/<%= p.slug %>">
+          <img class="img" src="<%= p.preview_path %>" alt="<%= p.title %>">
+        </a>
+        <div class="body">
+          <a class="title" href="/photo/<%= p.slug %>"><%= p.title %></a>
+          <div class="price"><%= p.price %> <%= p.currency || currency %></div>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<script>
+(function(){
+  const grid  = document.getElementById('grid');
+  const q     = document.getElementById('q');
+  const sort  = document.getElementById('sort');
+  const chips = document.getElementById('chips');
+  let activeCat = new URLSearchParams(location.search).get('cat') || '__all';
+
+  // style selected chip
+  function updateChipsUI(){
+    if (!chips) return;
+    chips.querySelectorAll('[data-cat]').forEach(btn=>{
+      btn.style.background = (btn.dataset.cat===activeCat) ? 'var(--brand)' : '#fff';
+      btn.style.color      = (btn.dataset.cat===activeCat) ? '#fff' : 'var(--ink)';
+      btn.style.borderColor= (btn.dataset.cat===activeCat) ? 'var(--brand)' : 'var(--line)';
+    });
+  }
+
+  function norm(s){ return (s||'').toLowerCase().trim(); }
+
+  function applyFilters(){
+    const query = norm(q && q.value);
+    const cards = Array.from(grid.children);
+    cards.forEach(card=>{
+      const t = card.dataset.text || '';
+      const cats = ',' + (card.dataset.cats || '') + ',';
+      const catOk = activeCat==='__all' || cats.includes(','+norm(activeCat)+',');
+      const txtOk = !query || t.includes(query);
+      card.style.display = (catOk && txtOk) ? '' : 'none';
+    });
+  }
+
+  function applySort(){
+    const cards = Array.from(grid.children).filter(el => el.style.display !== 'none');
+    const mode = sort ? sort.value : 'recent';
+    const cmp = {
+      'recent':     (a,b)=> String(b.dataset.created).localeCompare(String(a.dataset.created)),
+      'price_asc':  (a,b)=> (+a.dataset.price) - (+b.dataset.price),
+      'price_desc': (a,b)=> (+b.dataset.price) - (+a.dataset.price),
+      'title_asc':  (a,b)=> String(a.dataset.title).localeCompare(String(b.dataset.title)),
+      'title_desc': (a,b)=> String(b.dataset.title).localeCompare(String(a.dataset.title)),
+    }[mode] || ((a,b)=>0);
+    cards.sort(cmp).forEach(c=>grid.appendChild(c));
+  }
+
+  if (chips) {
+    chips.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-cat]');
+      if (!btn) return;
+      activeCat = btn.dataset.cat;
+      updateChipsUI();
+      applyFilters(); applySort();
+    });
+  }
+
+  if (q)    q.addEventListener('input', ()=>{ applyFilters(); applySort(); });
+  if (sort) sort.addEventListener('change', ()=> applySort());
+
+  // init
+  updateChipsUI();
+  applyFilters();
+  applySort();
+})();
+</script>

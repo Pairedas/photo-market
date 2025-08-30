@@ -1,0 +1,45 @@
+<a class="btn outline" href="<%= (adminBase||'/backoffice') %>/photos">← Retour</a>
+<h2 style="margin:12px 0 8px">Éditer : <%= photo.title %></h2>
+
+<div class="section" style="display:flex;gap:16px;flex-wrap:wrap">
+  <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px">
+    <div class="muted" style="margin-bottom:6px">Aperçu actuel</div>
+    <img src="<%= photo.preview_path %>" alt="" style="width:240px;height:180px;object-fit:cover;border-radius:12px">
+  </div>
+  <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px">
+    <div class="muted" style="margin-bottom:6px">Original actuel</div>
+    <code><%= photo.original_path %></code>
+  </div>
+</div>
+
+<form class="form" method="post" action="<%= (adminBase||'/backoffice') %>/photos/<%= photo.id %>" enctype="multipart/form-data"
+      style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;display:grid;gap:12px;max-width:740px;margin-top:12px">
+  <label>Titre
+    <input type="text" name="title" required value="<%= photo.title %>" style="width:100%">
+  </label>
+
+  <label>Prix
+    <input type="number" min="0" step="1" name="price" required value="<%= photo.price %>" style="width:100%">
+  </label>
+
+  <label>Catégories (séparées par des virgules)
+    <input type="text" name="categories" value="<%= (photo.categories||[]).join(',') %>" style="width:100%">
+  </label>
+
+  <label>Status
+    <select name="status">
+      <option value="published" <%= photo.status==='published'?'selected':'' %>>published</option>
+      <option value="draft" <%= photo.status==='draft'?'selected':'' %>>draft</option>
+    </select>
+  </label>
+
+  <details>
+    <summary>Remplacer les fichiers (optionnel)</summary>
+    <div style="margin-top:10px;display:grid;gap:10px">
+      <label>Nouvelle preview (publique) <input type="file" name="preview_file" accept="image/*"></label>
+      <label>Nouvel original (privé) <input type="file" name="original_file" accept="image/*"></label>
+    </div>
+  </details>
+
+  <button class="btn" type="submit">Enregistrer</button>
+</form>

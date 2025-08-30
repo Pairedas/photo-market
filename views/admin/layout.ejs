@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title || 'Admin' %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    .admin-wrap{max-width:1200px;margin:24px auto;padding:0 24px}
+    .admin-top{display:flex;align-items:center;gap:12px;min-height:64px;border-bottom:1px solid var(--line);margin-bottom:16px}
+    .admin-top h1{margin:0;font-size:20px}
+    .admin-nav{margin-left:auto;display:flex;gap:10px}
+    .table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    .table th,.table td{padding:10px 12px;text-align:left;background:#fff;border:1px solid var(--line)}
+    .table th:first-child,.table td:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
+    .table th:last-child,.table td:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0 16px}
+    .kpis .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow)}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="admin-wrap">
+    <header class="admin-top">
+      <h1>🛠️ Admin</h1>
+      <nav class="admin-nav">
+        <a class="btn outline" href="<%= adminBase || '/backoffice' %>/orders">Commandes</a>
+        <a class="btn outline" href="<%= adminBase || '/backoffice' %>/photos">Photos</a>
+      </nav>
+    </header>
+
+    <main>
+      <%- body %>
+    </main>
+  </div>
+</body>
+</html>
