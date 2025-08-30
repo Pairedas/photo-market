@@ -1,48 +1,41 @@
-const { path, readJSON, writeJSON } = require('../storage/jsonStore');
+// src/services/order.service.js
+const path = require('path');
+const { readJSON, writeJSON } = require('../storage/jsonStore');
 const { DATA_DIR } = require('../config');
-const { v4: uuidv4 } = require('uuid');
 
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
-const LINKS_FILE  = path.join(DATA_DIR, 'links.json');
 
-function all() { return readJSON(ORDERS_FILE, []); }
-function save(list){ writeJSON(ORDERS_FILE, list); }
-function findById(id){ return all().find(o => o.id === id); }
+function all() {
+  return readJSON(ORDERS_FILE, []);
+}
 
-function create({ photo_id, buyer_email, buyer_name, amount, currency, payment_method, payment_reference_client, proof_path, order_ref }) {
-  const list = all();
-  const entry = {
-    id: uuidv4(),
-    order_ref,
-    photo_id,
-    buyer_email,
-    buyer_name: buyer_name || null,
-    amount,
-    currency,
-    payment_method: payment_method || 'mobile_money',
-    payment_reference_client,
-    proof_path: proof_path || null,
-    status: 'UNDER_REVIEW',
-    created_at: new Date().toISOString(),
-    paid_at: null,
-    fulfilled_at: null
-  };
-  list.push(entry);
-  save(list);
+function findById(id) {
+  return all().find(o => o.id === id);
+}
+
+function create(order) {
+  const orders = all();
+  const id = 'o' + Date.now();
+  const entry = { id, ...order, status: 'pending' };
+  orders.push(entry);
+  writeJSON(ORDERS_FILE, orders);
   return entry;
 }
 
-function setStatus(id, status, extra={}) {
-  const list = all();
-  const i = list.findIndex(o => o.id === id);
-  if (i === -1) return null;
-  list[i] = { ...list[i], status, ...extra };
-  save(list);
-  return list[i];
+function update(id, patch = {}) {
+  const orders = all();
+  const i = orders.findIndex(o => o.id === id);
+  if (i < 0) return null;
+  const before = orders[i];
+  const after = { ...before, ...patch };
+  orders[i] = after;
+  writeJSON(ORDERS_FILE, orders);
+  return after;
 }
 
-/* === Links (download) === */
-function allLinks(){ return readJSON(LINKS_FILE, []); }
-function saveLinks(arr){ writeJSON(LINKS_FILE, arr); }
-
-module.exports = { all, save, findById, create, setStatus, allLinks, saveLinks, ORDERS_FILE, LINKS_FILE };
+module.exports = {
+  all,
+  findById,
+  create,
+  update,
+};
