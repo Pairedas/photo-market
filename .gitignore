@@ -21,3 +21,5 @@ storage/
 # OS & éditeurs
 .DS_Store
 .vscode/
+.env.rtf
+.env.rtf
