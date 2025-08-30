@@ -1,19 +1,16 @@
-// src/middlewares/uploadProof.js
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { STORAGE_DIR } = require('../config');
 
-// Dossier où l’on stocke les preuves de paiement
-const proofsDir = path.join(STORAGE_DIR, 'proofs');
-// Crée le sous-dossier si besoin (et seulement le sous-dossier, pas /data)
-if (!fs.existsSync(proofsDir)) {
-  fs.mkdirSync(proofsDir, { recursive: true });
-}
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, proofsDir);
+    const dir = path.join(STORAGE_DIR, 'proofs');
+    // Crée le dossier au moment de l'upload, pas au chargement du module
+    fs.mkdir(dir, { recursive: true }, (err) => {
+      if (err) return cb(err);
+      cb(null, dir);
+    });
   },
   filename: (req, file, cb) => {
     const stamp = Date.now();
