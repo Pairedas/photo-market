@@ -1,4 +1,5 @@
-const { path } = require('../storage/jsonStore');
+// src/services/photo.service.js
+const path = require('path');
 const { readJSON, writeJSON } = require('../storage/jsonStore');
 const { DATA_DIR } = require('../config');
 const slugify = require('../utils/slugify');
@@ -21,7 +22,15 @@ function findById(id) {
   return all().find(p => p.id === id);
 }
 
-function create({ title, price, categories = [], preview_path, original_path, status = 'published', currency }) {
+function create({
+  title,
+  price,
+  categories = [],
+  preview_path,
+  original_path,
+  status = 'published',
+  currency
+}) {
   const data = all();
   const id = 'p' + Date.now();
   const slug = slugify(title);
